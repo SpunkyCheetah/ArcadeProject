@@ -5,7 +5,10 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public float moveSpeed;
+    public int scoreValue;
+    private float respawnSpace = 20;
     public GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +20,12 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+
+        if (gameManager.isPlayerDead && transform.position.x < respawnSpace && transform.position.x > -respawnSpace && transform.position.z < respawnSpace && transform.position.z > -respawnSpace)
+        {
+            transform.Translate(Vector3.forward * -(respawnSpace * 1.1f));
+            transform.Rotate(Vector3.up, 180);
+        }
 
         if (transform.position.x > 110)
         {
@@ -41,6 +50,7 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.CompareTag("Projectile"))
         {
             Destroy(gameObject);
+            gameManager.UpdateScore(scoreValue);
         }
     }
 }

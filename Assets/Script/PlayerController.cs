@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public GameObject projectile;
     public GameObject projectileSpawn;
     public GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,7 +64,8 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             gameManager.isPlayerDead = true;
-            Destroy(gameObject);
+            gameManager.DeathScreen();
+            gameObject.SetActive(false);
         }
     }
 }
