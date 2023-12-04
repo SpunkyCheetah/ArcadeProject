@@ -4,20 +4,15 @@ using UnityEngine;
 
 public class MoveForward : MonoBehaviour
 {
-    public float moveSpeed;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float moveSpeed; // float for movement speed
 
     // Update is called once per frame
     void Update()
     {
+        // Move forward at a constant rate
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
 
-
+        // Destroy the projectile once it it goes off screen
         if (transform.position.x > 130 || transform.position.x < -130)
         {
             Destroy(gameObject);

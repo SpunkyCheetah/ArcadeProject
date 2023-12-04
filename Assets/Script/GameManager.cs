@@ -7,53 +7,43 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public bool isPlayerDead = false;
-    public int score = 0;
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI livesText;
-    public TextMeshProUGUI deathText;
-    public TextMeshProUGUI gameOverText;
-    public Button respawnButton;
-    public Button restartButton;
-    public int livesLeft;
-    public GameObject player;
-    public GameObject spawnManager;
-    public int dificulty;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void StartGame(int setDificulty)
-    {
-        dificulty = setDificulty;
-        spawnManager.GetComponent<SpawnManager>().spawnDelay /= dificulty;
-    }
+    public bool isPlayerDead = false; // boolean to track if the player is dead
+    public int score = 0; // int to keep track of the score
+    public int livesLeft; // in to keep track of the number of lives the player has
+    public TextMeshProUGUI scoreText; // the text that displays the score
+    public TextMeshProUGUI livesText; // the text that displays the number of lives
+    public TextMeshProUGUI deathText; // the text for the Death screen
+    public TextMeshProUGUI gameOverText; // the text for the Game Over screem
+    public Button respawnButton; // the button to respawn the player
+    public Button restartButton; // the button to restart the game
+    public GameObject player; // the player
+    public GameObject spawnManager; // the spawn manager
+    public int dificulty; // float to track dificulty
 
     public void DeathScreen()
     {
+        // player looses a life when destroyed
         UpdateLives(-1);
+
+        // Check if this is a Death or Game Over
         if (livesLeft >= 0)
         {
+            // Display Death screen text
             deathText.gameObject.SetActive(true);
-            UpdateScore(-10);
-            if (livesLeft < 1)
+
+            // If the score is in the negatives set it to 0
+            if (score < 1)
             {
                 score = 0;
                 UpdateScore(0);
             }
+
+            // Display the respawn button
             respawnButton.gameObject.SetActive(true);
         }
         else
         {
+            // Display Game Over text and restart button
             gameOverText.gameObject.SetActive(true);
             restartButton.gameObject.SetActive(true);
         }
@@ -61,30 +51,44 @@ public class GameManager : MonoBehaviour
 
     public void Respawn()
     {
+        // Hide Death text and respawn button
         deathText.gameObject.SetActive(false);
         respawnButton.gameObject.SetActive(false);
+
+        // Move player to the center of the screen
         player.transform.position = Vector3.zero;
+
+        // Bring player back
         isPlayerDead = false;
         player.gameObject.SetActive(true);
     }
     public void Restart()
     {
+        // Reset the scene when told to restart the game
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void UpdateScore (int addScore)
     {
+        // Update the score variable
         score += addScore;
+
+        // Make sure the score is not negative
         if (score < 0)
         {
             score = 0;
         }
+
+        // Update score text to current score
         scoreText.text = "score: " + score;
     }
 
     public void UpdateLives(int looseLives)
     {
+        // Update livesLeft variable
         livesLeft += looseLives;
+
+        // Update lives text to current lives
         livesText.text = "lives: " + livesLeft;
     }
 }
