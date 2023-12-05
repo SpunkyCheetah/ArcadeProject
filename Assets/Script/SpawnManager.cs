@@ -8,6 +8,7 @@ public class SpawnManager : MonoBehaviour
     public GameObject enemy; // the enemy prefab
     private Vector3 location; // the location the enemy will spawn at
     public GameManager gameManager; // the game manager
+    public bool isSpawning = true;
 
     // Start is called before the first frame update
     void Start()
@@ -16,13 +17,17 @@ public class SpawnManager : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         // Start spawning enemies indefinitely
-        InvokeRepeating("SpawnEnemy", 0, spawnDelay);
+        StartCoroutine(EnemySpawnLoop());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator EnemySpawnLoop()
     {
-        
+        while (isSpawning)
+        {
+            SpawnEnemy();
+            spawnDelay = 3 / gameManager.dificultyModifier;
+            yield return new WaitForSeconds(spawnDelay);
+        }
     }
 
     void SpawnEnemy()

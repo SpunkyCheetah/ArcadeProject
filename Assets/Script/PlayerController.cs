@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // If the player comes into contact with an enemy they die and inform the game manager of it
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy") && !gameManager.isPlayerDead)
         {
             gameManager.isPlayerDead = true;
             gameManager.DeathScreen();

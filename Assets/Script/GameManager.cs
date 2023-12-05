@@ -18,7 +18,12 @@ public class GameManager : MonoBehaviour
     public Button restartButton; // the button to restart the game
     public GameObject player; // the player
     public GameObject spawnManager; // the spawn manager
-    public int dificulty; // float to track dificulty
+    public float dificultyModifier; // float to track dificulty
+
+    void Update()
+    {
+        dificultyModifier = 1 + score / 200f; 
+    }
 
     public void DeathScreen()
     {
@@ -26,23 +31,17 @@ public class GameManager : MonoBehaviour
         UpdateLives(-1);
 
         // Check if this is a Death or Game Over
-        if (livesLeft >= 0)
+        if (livesLeft > 0)
         {
-            // Display Death screen text
+            // Display Death text and respawn button
             deathText.gameObject.SetActive(true);
-
-            // If the score is in the negatives set it to 0
-            if (score < 1)
-            {
-                score = 0;
-                UpdateScore(0);
-            }
-
-            // Display the respawn button
             respawnButton.gameObject.SetActive(true);
         }
         else
         {
+            // Tell spawner to stop spawning
+            spawnManager.GetComponent<SpawnManager>().isSpawning = false;
+
             // Display Game Over text and restart button
             gameOverText.gameObject.SetActive(true);
             restartButton.gameObject.SetActive(true);
@@ -65,7 +64,7 @@ public class GameManager : MonoBehaviour
     public void Restart()
     {
         // Reset the scene when told to restart the game
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("TitleScreen");
     }
 
     public void UpdateScore (int addScore)

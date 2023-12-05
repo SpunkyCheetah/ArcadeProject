@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>(); 
 
         // Set a random speed for the enemy
-        moveSpeed = Random.Range(10, 30); 
+        moveSpeed = Random.Range(10, 20) * (1 + gameManager.dificultyModifier / 10); 
     }
 
     // Update is called once per frame
@@ -28,7 +28,7 @@ public class EnemyController : MonoBehaviour
         // Enemy avoids the space around spawn while the player is respawning
         if (gameManager.isPlayerDead && transform.position.x < respawnSpace && transform.position.x > -respawnSpace && transform.position.z < respawnSpace && transform.position.z > -respawnSpace)
         {
-            transform.Translate(Vector3.forward * -(respawnSpace * 1.1f));
+            transform.Translate(Vector3.forward * -(respawnSpace * 1.2f));
             transform.Rotate(Vector3.up, 180);
         }
 

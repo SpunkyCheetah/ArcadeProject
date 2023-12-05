@@ -552,6 +552,7 @@ MonoBehaviour:
   spawnDelay: 1.5
   enemy: {fileID: 4943182896086458664, guid: 2530ef6a9a55f51448cb85dd2fc30cef, type: 3}
   gameManager: {fileID: 0}
+  isSpawning: 1
 --- !u!4 &218030645
 Transform:
   m_ObjectHideFlags: 0
