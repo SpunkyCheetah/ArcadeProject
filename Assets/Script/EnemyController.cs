@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
     public int scoreValue; // how many point destroying this enemy is worth
     private float respawnSpace = 20; // the range around 0,0,0 that the enemy will avoid during respawn
     public GameManager gameManager; // the game manager
+    public GameObject deathParticles; // the particles that play on death
 
     // Start is called before the first frame update
     void Start()
@@ -56,8 +57,9 @@ public class EnemyController : MonoBehaviour
         // When hit by a projectile the enemy is destroyed
         if (collision.gameObject.CompareTag("Projectile"))
         {
-            Destroy(gameObject);
+            Instantiate(deathParticles, transform.position, transform.rotation);
             gameManager.UpdateScore(scoreValue);
+            Destroy(gameObject);
         }
     }
 }

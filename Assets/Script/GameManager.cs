@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using UnityEditor.Experimental.RestService;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
     public int score = 0; // int to keep track of the score
     public int livesLeft; // in to keep track of the number of lives the player has
     public TextMeshProUGUI scoreText; // the text that displays the score
+    public TextMeshProUGUI highScoreText; // the text that displays the high score
     public TextMeshProUGUI livesText; // the text that displays the number of lives
     public TextMeshProUGUI deathText; // the text for the Death screen
     public TextMeshProUGUI gameOverText; // the text for the Game Over screem
@@ -19,6 +21,11 @@ public class GameManager : MonoBehaviour
     public GameObject player; // the player
     public GameObject spawnManager; // the spawn manager
     public float dificultyModifier; // float to track dificulty
+
+    void Start()
+    {
+        UpdateHighScore();
+    }
 
     void Update()
     {
@@ -79,7 +86,21 @@ public class GameManager : MonoBehaviour
         }
 
         // Update score text to current score
-        scoreText.text = "score: " + score;
+        scoreText.text = $"score: {score}";
+
+        // Check if score has surpassed the highscore
+        if (score > PlayerPrefs.GetInt("HighScore"))
+        {
+            // Change the highscore to match the score
+            PlayerPrefs.SetInt("HighScore", score);
+            UpdateHighScore();
+        }
+    }
+
+    public void UpdateHighScore()
+    {
+        // Update highscore text to current highscore
+        highScoreText.text = $"highscore: {PlayerPrefs.GetInt("HighScore")}";
     }
 
     public void UpdateLives(int looseLives)

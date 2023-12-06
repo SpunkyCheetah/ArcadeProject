@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public GameObject projectile; // the projetcile prefab
     public GameObject projectileSpawn; // spawn location for projectiles
     public GameManager gameManager; // the game manager
+    public GameObject deathParticles; // the particles that play on death
 
     // Start is called before the first frame update
     void Start()
@@ -64,6 +65,7 @@ public class PlayerController : MonoBehaviour
         // If the player comes into contact with an enemy they die and inform the game manager of it
         if (collision.gameObject.CompareTag("Enemy") && !gameManager.isPlayerDead)
         {
+            Instantiate(deathParticles, transform.position, transform.rotation);
             gameManager.isPlayerDead = true;
             gameManager.DeathScreen();
             gameObject.SetActive(false);
