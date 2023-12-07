@@ -21,10 +21,14 @@ public class GameManager : MonoBehaviour
     public GameObject player; // the player
     public GameObject spawnManager; // the spawn manager
     public float dificultyModifier; // float to track dificulty
+    private FadeController fadeController; // allows game manager to cause fading
 
     void Start()
     {
+        fadeController = gameObject.GetComponent<FadeController>();
         UpdateHighScore();
+        fadeController.SetTransparency(1f);
+        fadeController.FadeOut();
     }
 
     void Update()
@@ -32,7 +36,7 @@ public class GameManager : MonoBehaviour
         dificultyModifier = 1 + score / 200f; 
     }
 
-    public void DeathScreen()
+    public IEnumerator DeathScreen()
     {
         // player looses a life when destroyed
         UpdateLives(-1);
@@ -43,11 +47,17 @@ public class GameManager : MonoBehaviour
             // Display Death text and respawn button
             deathText.gameObject.SetActive(true);
             respawnButton.gameObject.SetActive(true);
+
+            yield return null;
         }
         else
         {
             // Tell spawner to stop spawning
             spawnManager.GetComponent<SpawnManager>().isSpawning = false;
+
+            // Fade screen
+            fadeController.FadeIn();
+            yield return new WaitForSeconds(fadeController.fadeDuration);
 
             // Display Game Over text and restart button
             gameOverText.gameObject.SetActive(true);

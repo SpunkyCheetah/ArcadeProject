@@ -60,15 +60,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        Instantiate(deathParticles, transform.position, transform.rotation);
+        gameManager.isPlayerDead = true;
+        gameManager.StartCoroutine(gameManager.DeathScreen());
+        gameObject.SetActive(false);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         // If the player comes into contact with an enemy they die and inform the game manager of it
         if (collision.gameObject.CompareTag("Enemy") && !gameManager.isPlayerDead)
         {
-            Instantiate(deathParticles, transform.position, transform.rotation);
-            gameManager.isPlayerDead = true;
-            gameManager.DeathScreen();
-            gameObject.SetActive(false);
+            Die();
         }
     }
 }

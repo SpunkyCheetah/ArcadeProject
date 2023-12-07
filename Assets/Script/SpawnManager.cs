@@ -9,6 +9,8 @@ public class SpawnManager : MonoBehaviour
     private Vector3 location; // the location the enemy will spawn at
     public GameManager gameManager; // the game manager
     public bool isSpawning = true;
+    public GameObject player;
+    public float safetyRange;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +35,12 @@ public class SpawnManager : MonoBehaviour
     void SpawnEnemy()
     {
         // Choose location for new enemy to spawn
-        location = new Vector3(Random.Range(120, -120), 0, Random.Range(75, -75));
+        location = RandomLocation();
+
+        while ((location - player.transform.position).magnitude < safetyRange)
+        {
+            location = RandomLocation();
+        }
 
         // Choose a direction for new enemy to face
         transform.Rotate(Vector3.up, Random.Range(0, 180));
@@ -43,5 +50,10 @@ public class SpawnManager : MonoBehaviour
         {
             Instantiate(enemy, location, transform.rotation);
         }
+    }
+
+    Vector3 RandomLocation()
+    {
+        return new Vector3(Random.Range(120, -120), 0, Random.Range(75, -75));
     }
 }

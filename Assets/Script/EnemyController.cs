@@ -52,14 +52,19 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        Instantiate(deathParticles, transform.position, transform.rotation);
+        gameManager.UpdateScore(scoreValue);
+        Destroy(gameObject);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         // When hit by a projectile the enemy is destroyed
         if (collision.gameObject.CompareTag("Projectile"))
         {
-            Instantiate(deathParticles, transform.position, transform.rotation);
-            gameManager.UpdateScore(scoreValue);
-            Destroy(gameObject);
+            Die();
         }
     }
 }
