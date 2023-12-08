@@ -11,12 +11,15 @@ public class PlayerController : MonoBehaviour
     public GameObject projectileSpawn; // spawn location for projectiles
     public GameManager gameManager; // the game manager
     public GameObject deathParticles; // the particles that play on death
+    public AudioSource audioSource; // the audio source
+    public AudioClip fireWoosh; // sound effect for launching a projectile
 
     // Start is called before the first frame update
     void Start()
     {
-        // Set up the game manager
+        // Set up the componenrs
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -38,6 +41,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             Instantiate(projectile, projectileSpawn.transform.position, projectileSpawn.transform.rotation);
+            audioSource.PlayOneShot(fireWoosh);
         }
 
 

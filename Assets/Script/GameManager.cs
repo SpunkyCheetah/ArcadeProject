@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
-using UnityEditor.Experimental.RestService;
 
 public class GameManager : MonoBehaviour
 {

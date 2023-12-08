@@ -9,15 +9,18 @@ public class EnemyController : MonoBehaviour
     private float respawnSpace = 20; // the range around 0,0,0 that the enemy will avoid during respawn
     public GameManager gameManager; // the game manager
     public GameObject deathParticles; // the particles that play on death
+    public AudioSource audioSource; // the audio source
+    public AudioClip deathAudio; // sound effect for the enemy being destroyed
 
     // Start is called before the first frame update
     void Start()
     {
-        // Set up the game manager
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>(); 
+        // Set up the components
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        audioSource = GetComponent<AudioSource>();
 
         // Set a random speed for the enemy
-        moveSpeed = Random.Range(10, 20) * (1 + gameManager.dificultyModifier / 10); 
+        moveSpeed = Random.Range(10, 20) * (1 + gameManager.dificultyModifier / 10);
     }
 
     // Update is called once per frame
@@ -52,19 +55,15 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void Die()
-    {
-        Instantiate(deathParticles, transform.position, transform.rotation);
-        gameManager.UpdateScore(scoreValue);
-        Destroy(gameObject);
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         // When hit by a projectile the enemy is destroyed
         if (collision.gameObject.CompareTag("Projectile"))
         {
-            Die();
+            audioSource.PlayOneShot(deathAudio);
+            Instantiate(deathParticles, transform.position, transform.rotation);
+            gameManager.UpdateScore(scoreValue);
+            Destroy(gameObject);
         }
     }
 }
