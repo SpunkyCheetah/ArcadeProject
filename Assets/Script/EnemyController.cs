@@ -6,11 +6,13 @@ public class EnemyController : MonoBehaviour
 {
     public float moveSpeed; // movement speed variable
     public int scoreValue; // how many point destroying this enemy is worth
-    private float respawnSpace = 20; // the range around 0,0,0 that the enemy will avoid during respawn
-    public GameManager gameManager; // the game manager
+    public float respawnSpace = 20; // the range around 0,0,0 that the enemy will avoid during respawn
+    private GameManager gameManager; // the game manager
     public GameObject deathParticles; // the particles that play on death
-    public AudioSource audioSource; // the audio source
+    private AudioSource audioSource; // the audio source
     public AudioClip deathAudio; // sound effect for the enemy being destroyed
+
+    public GameObject model;
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +34,7 @@ public class EnemyController : MonoBehaviour
         // Enemy avoids the space around spawn while the player is respawning
         if (gameManager.isPlayerDead && transform.position.x < respawnSpace && transform.position.x > -respawnSpace && transform.position.z < respawnSpace && transform.position.z > -respawnSpace)
         {
-            transform.Translate(Vector3.forward * -(respawnSpace * 1.2f));
+            transform.Translate(Vector3.forward * -(respawnSpace * 1.5f));
             transform.Rotate(Vector3.up, 180);
         }
 
@@ -55,15 +57,31 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    // Enemy checks for collisions
     private void OnCollisionEnter(Collision collision)
     {
         // When hit by a projectile the enemy is destroyed
         if (collision.gameObject.CompareTag("Projectile"))
         {
+            // Plays death nsound effect
             audioSource.PlayOneShot(deathAudio);
+
+            // Displays death particles
             Instantiate(deathParticles, transform.position, transform.rotation);
+
+            // Add to score
             gameManager.UpdateScore(scoreValue);
-            Destroy(gameObject);
+
+            // Disable enemy without destroying for a few seconds while audio plays
+            Destroy(model);
+            Collider[] colliders = GetComponents<Collider>();
+            foreach(Collider collider in colliders)
+            {
+                collider.enabled = false;
+            }
+
+            // Destroy the game object
+            Destroy(gameObject, 2);
         }
     }
 }

@@ -9,9 +9,9 @@ public class PlayerController : MonoBehaviour
     private float verticalInput; // float for vertical inpute
     public GameObject projectile; // the projetcile prefab
     public GameObject projectileSpawn; // spawn location for projectiles
-    public GameManager gameManager; // the game manager
+    private GameManager gameManager; // the game manager
     public GameObject deathParticles; // the particles that play on death
-    public AudioSource audioSource; // the audio source
+    private AudioSource audioSource; // the audio source
     public AudioClip fireWoosh; // sound effect for launching a projectile
 
     // Start is called before the first frame update
@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             Instantiate(projectile, projectileSpawn.transform.position, projectileSpawn.transform.rotation);
+
+            // Play projectile launching sound effect
             audioSource.PlayOneShot(fireWoosh);
         }
 
@@ -64,14 +66,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Player dies
     public void Die()
     {
+        // Dispay death particles
         Instantiate(deathParticles, transform.position, transform.rotation);
+
+        // Tell game manager that the player is dead
         gameManager.isPlayerDead = true;
+
+        // Tell game manager to display the appropriate death screen
         gameManager.StartCoroutine(gameManager.DeathScreen());
+
+        // Hide/disable the player
         gameObject.SetActive(false);
     }
 
+    // Check if the player collides with anything
     private void OnCollisionEnter(Collision collision)
     {
         // If the player comes into contact with an enemy they die and inform the game manager of it

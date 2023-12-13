@@ -21,20 +21,50 @@ public class GameManager : MonoBehaviour
     public GameObject spawnManager; // the spawn manager
     public float dificultyModifier; // float to track dificulty
     private FadeController fadeController; // allows game manager to cause fading
+    private bool canRespawn;
+    private bool canRestart;
 
     void Start()
     {
+        // Attatch fade controller
         fadeController = gameObject.GetComponent<FadeController>();
+
+        // Set highscore text to the correct value
         UpdateHighScore();
+
+        // Set the screen to black in preperation for fading into the scene
         fadeController.SetTransparency(1f);
+
+        // Fade into the scene
         fadeController.FadeOut();
     }
 
     void Update()
     {
-        dificultyModifier = 1 + score / 200f; 
+        // make sure difficulty is set correctle based on score
+        dificultyModifier = 1 + score / 200f;
+
+        if (Input.GetButtonDown("Start"))
+        {
+            if (canRespawn)
+            {
+                Respawn();
+            }
+            else if (canRestart)
+            {
+                Restart();
+            }
+        }
+
+        if (Input.GetButtonDown("Exit"))
+        {
+            
+            Restart();
+            
+        }
     }
 
+    // When the player dies, determine if this is a game over a retry and display correct UI elements
     public IEnumerator DeathScreen()
     {
         // player looses a life when destroyed
@@ -46,6 +76,8 @@ public class GameManager : MonoBehaviour
             // Display Death text and respawn button
             deathText.gameObject.SetActive(true);
             respawnButton.gameObject.SetActive(true);
+
+            canRespawn = true;
 
             yield return null;
         }
@@ -61,9 +93,12 @@ public class GameManager : MonoBehaviour
             // Display Game Over text and restart button
             gameOverText.gameObject.SetActive(true);
             restartButton.gameObject.SetActive(true);
+
+            canRestart = true;
         }
     }
 
+    // Respawn the player
     public void Respawn()
     {
         // Hide Death text and respawn button
@@ -76,13 +111,20 @@ public class GameManager : MonoBehaviour
         // Bring player back
         isPlayerDead = false;
         player.gameObject.SetActive(true);
+
+        canRespawn = false;
     }
+
+    // Go back to the title screen for restarting
     public void Restart()
     {
         // Reset the scene when told to restart the game
         SceneManager.LoadScene("TitleScreen");
+
+        canRestart = false;
     }
 
+    // Set the score display text to the correct value
     public void UpdateScore (int addScore)
     {
         // Update the score variable
@@ -106,12 +148,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Set the high score display text to the correct value
     public void UpdateHighScore()
     {
         // Update highscore text to current highscore
         highScoreText.text = $"highscore: {PlayerPrefs.GetInt("HighScore")}";
     }
 
+    // Set the lives display text to the correct value
     public void UpdateLives(int looseLives)
     {
         // Update livesLeft variable

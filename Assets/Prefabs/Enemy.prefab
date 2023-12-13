@@ -5061,10 +5061,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 20
   scoreValue: 10
-  gameManager: {fileID: 0}
+  respawnSpace: 20
   deathParticles: {fileID: 3682913371481161342, guid: b98f3e226bc6702459724cac08eabbbd, type: 3}
-  audioSource: {fileID: 0}
   deathAudio: {fileID: 8300000, guid: 3d5981c89d4457a419fe0a55a0c55742, type: 3}
+  model: {fileID: 4943182896148751798}
 --- !u!54 &-9112321390043719487
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5092,8 +5092,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.75
   m_Pitch: 1
   Loop: 0
   Mute: 0

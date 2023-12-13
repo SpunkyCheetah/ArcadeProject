@@ -7,10 +7,10 @@ public class SpawnManager : MonoBehaviour
     public float spawnDelay; // delay between spawning enemies
     public GameObject enemy; // the enemy prefab
     private Vector3 location; // the location the enemy will spawn at
-    public GameManager gameManager; // the game manager
-    public bool isSpawning = true;
-    public GameObject player;
-    public float safetyRange;
+    private GameManager gameManager; // the game manager
+    public bool isSpawning = true; // are enemies spawning right now?
+    public GameObject player; // the Player game object
+    public float safetyRange; // the range around the player that enemies cannot spawn in
 
     // Start is called before the first frame update
     void Start()
@@ -22,21 +22,26 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(EnemySpawnLoop());
     }
 
+    // Spawn enemies in an ongoing loop
     IEnumerator EnemySpawnLoop()
     {
         while (isSpawning)
         {
             SpawnEnemy();
+
+            // Delay between spawns for a length determined by vurrent difficulty levels
             spawnDelay = 3 / gameManager.dificultyModifier;
             yield return new WaitForSeconds(spawnDelay);
         }
     }
 
+    // Set up and spawn an enemy
     void SpawnEnemy()
     {
         // Choose location for new enemy to spawn
         location = RandomLocation();
 
+        // Make sure enemies do not spawn on top of the player
         while ((location - player.transform.position).magnitude < safetyRange)
         {
             location = RandomLocation();
@@ -52,6 +57,7 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    // Returns a vector for a random position
     Vector3 RandomLocation()
     {
         return new Vector3(Random.Range(120, -120), 0, Random.Range(75, -75));

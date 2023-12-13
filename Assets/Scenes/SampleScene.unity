@@ -552,6 +552,9 @@ MonoBehaviour:
   spawnDelay: 1.5
   enemy: {fileID: 4943182896086458664, guid: 2530ef6a9a55f51448cb85dd2fc30cef, type: 3}
   gameManager: {fileID: 0}
+  isSpawning: 1
+  player: {fileID: 0}
+  safetyRange: 0
 --- !u!4 &218030645
 Transform:
   m_ObjectHideFlags: 0
@@ -1222,6 +1225,7 @@ MonoBehaviour:
   score: 0
   livesLeft: 3
   scoreText: {fileID: 1723114361}
+  highScoreText: {fileID: 0}
   livesText: {fileID: 2084727208}
   deathText: {fileID: 609523847}
   gameOverText: {fileID: 928585141}
@@ -1487,6 +1491,9 @@ MonoBehaviour:
   projectile: {fileID: 1020378143482623106, guid: 722fee5d886571f4caff237d565b4ff1, type: 3}
   projectileSpawn: {fileID: 183538338}
   gameManager: {fileID: 1668219801}
+  deathParticles: {fileID: 0}
+  audioSource: {fileID: 0}
+  fireWoosh: {fileID: 0}
 --- !u!4 &1751791946
 Transform:
   m_ObjectHideFlags: 0

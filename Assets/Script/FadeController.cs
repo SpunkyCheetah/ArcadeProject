@@ -18,6 +18,7 @@ public class FadeController : MonoBehaviour
         fadeImage.color = imageColor;
     }
 
+    // Set transparency straight to a given level with no fade
     public void SetTransparency(float targetAlpha)
     {
         Color imageColor = fadeImage.color;
@@ -25,6 +26,7 @@ public class FadeController : MonoBehaviour
         fadeImage.color = imageColor;
     }
 
+    // Fade from transparent to opaque
     public void FadeIn()
     {
         // Checks that it isn't already fading
@@ -35,6 +37,7 @@ public class FadeController : MonoBehaviour
         }
     }
 
+    // Fade from opaque to transparent
     public void FadeOut()
     {
         // Checks that it isn't already fading
@@ -45,6 +48,7 @@ public class FadeController : MonoBehaviour
         }
     }
 
+    // The actual act of fading from one level of transparency to another
     private IEnumerator FadeImage(float startAlpha, float targetAlpha) // takes floats for the starting transparency and end goal transparency
     {
         // Updates isFading so it doesn't try to fade multiple times at once

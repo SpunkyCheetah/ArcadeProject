@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class CloudController : MonoBehaviour
 {
-    public float moveSpeed; // float for movement speed
+    public float moveSpeed = 10; // float for movement speed
+    public float edgeOfScreen = 250;
 
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(Random.Range(-350, 225), transform.position.y, Random.Range(-75, 75));
+        // Set clouds at a random position when the game starts
+        transform.position = new Vector3(Random.Range(-350, 225), Random.Range(-15, -30), Random.Range(-100, 100));
+
+        // Set a random speed for cloud
         moveSpeed = Random.Range(10, 20);
     }
 
@@ -19,9 +23,12 @@ public class CloudController : MonoBehaviour
         // Move forward at a constant rate
         transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
 
-        if (transform.position.x > 250)
+        // If cloud goes off the egde of the screen, reset on the other side of the screen
+        if (transform.position.x > edgeOfScreen)
         {
-            transform.position = new Vector3(-250, transform.position.y, Random.Range(-75, 75));
+            transform.position = new Vector3(-edgeOfScreen, Random.Range(-15, -30), Random.Range(-100, 100));
+
+            // Set new speed on reset
             moveSpeed = Random.Range(10, 20);
         }
     }
