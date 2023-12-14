@@ -26,6 +26,13 @@ public class TitleScreenManager : MonoBehaviour
         {
             StartGameStarter();
         }
+
+        // If exit button is pressed, quite game
+        if (Input.GetButtonDown("Exit"))
+        {
+            //Debug.Log("quit");
+            Application.Quit();
+        }
     }
 
     // Method for buttons to tell this script to start the game

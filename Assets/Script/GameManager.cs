@@ -55,13 +55,6 @@ public class GameManager : MonoBehaviour
                 Restart();
             }
         }
-
-        if (Input.GetButtonDown("Exit"))
-        {
-            
-            Restart();
-            
-        }
     }
 
     // When the player dies, determine if this is a game over a retry and display correct UI elements
